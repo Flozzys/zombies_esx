@@ -491,51 +491,28 @@ if Config.ZombieDropLoot then
 		while true do
 			Citizen.Wait(1)
 			for i, entity in pairs(entitys) do
-				playerX, playerY, playerZ = table.unpack(GetEntityCoords(GetPlayerPed(-1), true))
-				pedX, pedY, pedZ = table.unpack(GetEntityCoords(entity, true))
-				if DoesEntityExist(entity) == false then
-					table.remove(entitys, i)
-				end
 				if IsPedDeadOrDying(entity, 1) == 1 then
 					if GetPedSourceOfDeath(entity) == PlayerPedId() then
-						playerX, playerY, playerZ = table.unpack(GetEntityCoords(GetPlayerPed(-1), true))
-						pedX, pedY, pedZ = table.unpack(GetEntityCoords(entity, true))	
-						if not IsPedInAnyVehicle(PlayerPedId(), false) then
-							if(Vdist(playerX, playerY, playerZ, pedX, pedY, pedZ) < 1.5) then
-								ESX.Game.Utils.DrawText3D({x = pedX, y = pedY, z = pedZ + 0.2}, '~c~PRESS ~b~[E]~c~ TO SEARCH', 0.8, 4)
-								if IsControlJustReleased(1, 51) then
-									if DoesEntityExist(GetPlayerPed(-1)) then
-										RequestAnimDict("random@domestic")
-										while not HasAnimDictLoaded("random@domestic") do
-											Citizen.Wait(1)
-										end
-										TaskPlayAnim(PlayerPedId(), "random@domestic", "pickup_low", 8.0, -8, 2000, 2, 0, 0, 0, 0)
+						local randomChance = math.random(1, 100)
+						local randomWeapon = Config.WeaponLoot[math.random(1, #Config.WeaponLoot)]
+						local randomItem = Config.ItemLoot[math.random(1, #Config.ItemLoot)]
 
-										Citizen.Wait(2000)
-										randomChance = math.random(1, 100)
-										randomWeapon = Config.WeaponLoot[math.random(1, #Config.WeaponLoot)]
-										randomItem = Config.ItemLoot[math.random(1, #Config.ItemLoot)]
-
-										if randomChance > 0 and randomChance < Config.ProbabilityWeaponLoot then
-											local randomAmmo = math.random(1, 30)
-											GiveWeaponToPed(PlayerPedId(), randomWeapon, randomAmmo, true, false)
-											ESX.ShowNotification('You found ' .. randomWeapon)
-										elseif randomChance >= Config.ProbabilityWeaponLoot and randomChance < Config.ProbabilityMoneyLoot then
-											TriggerServerEvent('esx_zombiesystem:moneyloot')
-										elseif randomChance >= Config.ProbabilityMoneyLoot and randomChance < Config.ProbabilityItemLoot then
-											TriggerServerEvent('esx_zombiesystem:itemloot', randomItem)
-										elseif randomChance >= Config.ProbabilityItemLoot and randomChance < 100 then
-											ESX.ShowNotification('You not found nothing')
-										end
-										ClearPedSecondaryTask(GetPlayerPed(-1))
-										local model = GetEntityModel(entity)
-										SetEntityAsNoLongerNeeded(entity)
-										SetModelAsNoLongerNeeded(model)
-										table.remove(entitys, i)
-									end
-								end
-							end
+						if randomChance > 0 and randomChance < Config.ProbabilityWeaponLoot then
+							local randomAmmo = math.random(1, 30)
+							GiveWeaponToPed(PlayerPedId(), randomWeapon, randomAmmo, true, false)
+							ESX.ShowNotification('You found ' .. randomWeapon)
+						elseif randomChance >= Config.ProbabilityWeaponLoot and randomChance < Config.ProbabilityMoneyLoot then
+							TriggerServerEvent('esx_zombiesystem:moneyloot')
+						elseif randomChance >= Config.ProbabilityMoneyLoot and randomChance < Config.ProbabilityItemLoot then
+							TriggerServerEvent('esx_zombiesystem:itemloot', randomItem)
+						else
+							ESX.ShowNotification('You not found anything')
 						end
+
+						local model = GetEntityModel(entity)
+						SetEntityAsNoLongerNeeded(entity)
+						SetModelAsNoLongerNeeded(model)
+						table.remove(entitys, i)
 					end
 				end
 			end
