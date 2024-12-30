@@ -7,9 +7,9 @@ Config.DespawnDistance = 120
 
 Config.ZombieDropLoot = true
 Config.ProbabilityWeaponLoot = 3 -- 3%
-Config.ProbabilityMoneyLoot = 33 -- 3-33 = 30%
-Config.ProbabilityItemLoot = 53 -- 53-43-3 = 7%
---Weapons and Money are 40% and 60% is 'you not found nothing' alert, see the code to understand.
+Config.ProbabilityMoneyLoot = 33 -- 30% chance for money
+Config.ProbabilityItemLoot = 53 -- 20% chance for items
+-- Weapons: 3%, Money: 30%, Items: 20%, Nothing: 47%
 Config.WeaponLoot = {
 	"WEAPON_ASSAULTRIFLE",
 	"WEAPON_PUMPSHOTGUN",
@@ -32,9 +32,9 @@ Config.ObjectsLoot = {
 }
 
 Config.ProbabilityWeaponLootObject = 2 -- 2%
-Config.ProbabilityMoneyLootObject = 22 -- 22-2 20%
-Config.ProbabilityItemLootObject = 42 -- 52-22-2 18%
---Weapons and Money are 40% and 60% is 'you not found nothing' alert, see the code to understand.
+Config.ProbabilityMoneyLootObject = 22 -- 20% chance for money
+Config.ProbabilityItemLootObject = 42 -- 20% chance for items
+-- Weapons: 2%, Money: 20%, Items: 20%, Nothing: 58%
 Config.WeaponLootObject ={
 	"WEAPON_ASSAULTRIFLE",
 	"WEAPON_PUMPSHOTGUN",
